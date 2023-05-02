@@ -159,3 +159,37 @@ Next.js cambia el paradigma de los **SPA** (Single Page Application), y te da op
 https://legacy.reactjs.org/docs/hooks-intro.html
 https://fernando-herrera.com/#/search/react
 https://www.youtube.com/watch?v=dNxaP_BTtwQ&list=PLCKuOXG0bPi26-eawizqyLOgM7j66H_4M
+
+### Primer proyecto de NextJS
+
+Pueden consultar en https://nextjs.org/docs
+
+```fish
+pnpm create initial-demo
+mv initial-demo 01-initial-demo
+cd 01-initial-demo
+pnpm dev # En caso de error realizar lo siguiente
+# --- Error:
+touch postcss.config.json
+```
+
+```json
+{
+  "plugins": ["autoprefixer"]
+}
+```
+
+```fish
+# Fin Error ---
+Ctrl + c # Cancelen la terminal y vuelvan a iniciar
+pnpm dev # ingresar a localhost:3000
+```
+
+Dentro de `./pages/`, es obligatorio que las páginas sean la exportación por defecto, y que los archivos estén en minúsculas.
+Si el archivo es `index.jsx` la URL buscará un `index.html`, si el arhivo `jsx` tiene otro nombre como: `home.jsx` la URL reconocerá `localhost:3000/home`.
+
+Así como definamos los `path's` es como usaremos en la navegación, y creando las rutas de manera implícita basada en **fileSystem**.
+
+Al ejecutar `pnpm dev` ó `pnpm build`, genera unos archivos en la carpeta `.next`.
+
+El archivo `./pages/_app.js` es un archivo común que comparte todas las páginas, ideal para incluir `navbar` y/o `footer`.
