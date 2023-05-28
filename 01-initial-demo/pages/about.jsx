@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { MainLayout } from "../components/layouts/MainLayout";
+import { DarkLayout } from "../components/layouts/DarkLayout";
 
 export default function AboutPage() {
   return (
-    <MainLayout>
+    <>
       <h3>About Page</h3>
       <h1 className={"title"}>
         {/* Ir a <a href="/">Home</a> */}
@@ -13,6 +14,14 @@ export default function AboutPage() {
         Get started by editing&nbsp;
         <code className={"code"}>pages/about.jsx</code>
       </p>
-    </MainLayout>
+    </>
   );
 }
+
+AboutPage.getLayout = function getLayout(page) {
+  return (
+    <MainLayout>
+      <DarkLayout>{page}</DarkLayout>
+    </MainLayout>
+  );
+};
