@@ -200,11 +200,57 @@ Pueden consultar el proyecto `02-initial-demo`.
 
 ### Desplegando nuestra aplicación
 
-**Desplegar la aplicación en local.**
+**Desplegar la aplicación en Local.**
 
 ```fish
 cd 02-initial-demo
 pnpm install
 yarn build
 yarn start
+```
+
+**Desplegar la aplicación en Vercel.**
+
+- Crear una cuenta con GitHub en (Vercel)[https://vercel.com].
+
+- Crear un repositorio en GitHub (en mi caso `next-vercel`)
+
+> Si ya tenías un repositorio en la carpeta `02-initial-demo`, o sea, hiciste `git init` y `git remote add origin <repo>` en dicha carpeta.
+> Entonces realizar lo siguiente:
+
+```fish
+git add .
+git commit -m "Pre-deployment Vercel"
+git remote add upstream git@github.com:<user>/next-vercel.git # upstream solo es un nombre
+git push upstream main
+git remote -v # Podras ver los repositorios ligados a tu directorio
+```
+
+> Si el `git init` y `git remote add origin <repo>` está en un directorio superior como `curso-next/02-initial-demo`.
+> Entonces realizar lo siguiente:
+
+```fish
+# Estando en curso-next
+cd 02-initial-demo
+git init
+git add .
+git commit -m "Pre-deployment Vercel"
+git remote add origin git@github.com:<user>/next-vercel.git
+git push -u origin main
+```
+
+- Crear un nuevo proyecto que Vercel y añadir nuestro repositorio y dejamos que compile y termine el despliegue.
+
+- Ingresamos a nuestra página ya desplegada y eso es todo les creará una dirección parecida a esta `https://next-vercel-zeta.vercel.app/`
+
+**Desplegar la aplicación en Docker.**
+
+- Revisar: `02-initial-demo/.dockerignore`
+
+- Revisar: `02-initial-demo/Dockerfile`
+
+```fish
+# Ejecutar
+docker build -t nextjs-initial .
+docker run --name=next-app -p 3000:3000 nextjs-initial
 ```
