@@ -15,6 +15,6 @@ export default function PricingPage() {
   );
 }
 
-PricingPage.getLayout = function getLaout(page) {
+PricingPage.getLayout = function getLaout(page: JSX.Element) {
   return <MainLayout>{page}</MainLayout>;
 };
