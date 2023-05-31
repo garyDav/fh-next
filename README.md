@@ -193,3 +193,18 @@ Así como definamos los `path's` es como usaremos en la navegación, y creando l
 Al ejecutar `pnpm dev` ó `pnpm build`, genera unos archivos en la carpeta `.next`.
 
 El archivo `./pages/_app.js` es un archivo común que comparte todas las páginas, ideal para incluir `navbar` y/o `footer`.
+
+### Convertir JSX a TSX
+
+Pueden consultar el proyecto `02-initial-demo`.
+
+### Desplegando nuestra aplicación
+
+**Desplegar la aplicación en local.**
+
+```fish
+cd 02-initial-demo
+pnpm install
+yarn build
+yarn start
+```
