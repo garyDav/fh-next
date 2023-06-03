@@ -165,10 +165,11 @@ https://www.youtube.com/watch?v=dNxaP_BTtwQ&list=PLCKuOXG0bPi26-eawizqyLOgM7j66H
 Pueden consultar en https://nextjs.org/docs
 
 ```fish
-pnpm create initial-demo
+pnpm create next-app initial-demo
 mv initial-demo 01-initial-demo
 cd 01-initial-demo
 pnpm dev # En caso de error realizar lo siguiente
+pnpm add -D autoprefixer
 # --- Error:
 touch postcss.config.json
 ```
@@ -254,3 +255,122 @@ git push -u origin main
 docker build -t nextjs-initial .
 docker run --name=next-app -p 3000:3000 nextjs-initial
 ```
+
+## Sección 3: Static Generated App - Pokemon Static
+
+### Temas puntuales de la sección
+
+Esta sección es sumamente importante para comprender cómo podemos crear de forma estática páginas aunque tengan argumentos dinámicos.
+
+Puntualmente veremos:
+
+- Multiples componentes de NextUI
+
+- Flex Layout
+
+- Temas de NextUI
+
+- Next \_document
+
+- Navegación
+
+- Parámetros por URL
+
+- Parámetros estáticos
+
+- Next - GetStaticProps
+
+- Next - getStaticPaths
+
+- Generar 151 páginas de forma estática en tiempo de construcción (build time)
+
+### Instalación del proyecto
+
+```fish
+pnpm create next-app
+✔ What is your project named? … pokemon-static
+✔ Would you like to use TypeScript with this project? … No / *Yes
+✔ Would you like to use ESLint with this project? … No / *Yes
+✔ Would you like to use Tailwind CSS with this project? … *No / Yes
+✔ Would you like to use `src/` directory with this project? … *No / Yes
+✔ Use App Router (recommended)? … *No / Yes
+✔ Would you like to customize the default import alias? … *No / Yes
+
+mv pokemon-static 03-pokemon-static
+cd 03-pokemon-static
+pnpm dev
+# --- En caso de Error "autoprefixer" realizar lo siguiente:
+pnpm add -D autoprefixer
+touch postcss.config.json
+--- # Content JSON
+{
+  "plugins": ["autoprefixer"]
+}
+---
+pnpm dev # Solucionado
+```
+
+### Modificando el proyecto base
+
+Eliminar archivos innecesarios.
+
+```fish
+rm -R pages/api
+nvim styles/globals.css
+~ ^a d # NVIM: seleccionar todo y eliminar contenido
+~ :wq # NVIM: guardar y salir
+rm public/next.svg
+rm public/vercel.svg
+rm styles/Home.module.css
+```
+
+En caso que quieran añadir prettier.
+
+```fish
+pnpm add -D prettier eslint-config-prettier # Add Prettier
+nvim .prettierrc
+--- # Content JSON
+{
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "bracketSameLine": true,
+  "arrowParens": "avoid",
+  "trailingComma": "all"
+}
+---
+nvim .eslintrc.json
+--- # Content JSON
+{
+  "extends": ["next/core-web-vitals", "eslint-config-prettier"],
+  "rules": {
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "comma-dangle": [2, "always-multiline"],
+    "no-unused-vars": "warn"
+  }
+}
+---
+```
+
+Modificando Home con lo básico `page/index.tsx`.
+
+```tsx
+import { NextPage } from "next";
+
+const HomePage: NextPage = () => {
+  return (
+    <>
+      <h1>Hola Mundo</h1>
+    </>
+  );
+};
+
+export default HomePage;
+```
+
+### NextUI React UI Library
+
+Instalación `pnpm add @nextui-org/react`, seguir las instrucciones [NextUI](https://nextui.org/docs/guide/getting-started)
