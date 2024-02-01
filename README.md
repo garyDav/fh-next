@@ -157,8 +157,12 @@ Next.js cambia el paradigma de los **SPA** (Single Page Application), y te da op
 ### Recomendaciones:
 
 https://legacy.reactjs.org/docs/hooks-intro.html
+
 https://fernando-herrera.com/#/search/react
+
 https://www.youtube.com/watch?v=dNxaP_BTtwQ&list=PLCKuOXG0bPi26-eawizqyLOgM7j66H_4M
+
+https://developers.google.com/search/docs/crawling-indexing/special-tags?hl=es
 
 ### Primer proyecto de NextJS
 
