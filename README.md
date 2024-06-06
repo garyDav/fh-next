@@ -94,7 +94,7 @@ docker pull mongo:5.0.0
 ],
 ```
 
-##### Tema que estoy usando en VSCode:
+##### Tema que estoy usando en VSCode
 
 - [Tokyo Night](https://marketplace.visualstudio.com/items?itemName=enkia.tokyo-night)
 
@@ -138,7 +138,7 @@ Next.js cambia el paradigma de los **SPA** (Single Page Application), y te da op
 - **ISR:** Incremental Static Regeneration.
 - **DR:** Dynamic Routing.
 
-#### Un SPA funciona así:
+#### Un SPA funciona así
 
 1. El usuario entra a una [URL](#) el cual inicial la primera solicitud, lo llamamos (request).
 
@@ -154,19 +154,19 @@ Next.js cambia el paradigma de los **SPA** (Single Page Application), y te da op
 
 **¿Por que es tan importante el SEO?**, es el impacto que esa aplicación tendrá en el internet. es lo que tenemos que ofrecer a los buscadores mas importantes del mundo, que es lo que hace su aplicación, en determinado URL.
 
-### Recomendaciones:
+### Recomendaciones
 
-https://legacy.reactjs.org/docs/hooks-intro.html
+<https://legacy.reactjs.org/docs/hooks-intro.html>
 
-https://fernando-herrera.com/#/search/react
+<https://fernando-herrera.com/#/search/react>
 
-https://www.youtube.com/watch?v=dNxaP_BTtwQ&list=PLCKuOXG0bPi26-eawizqyLOgM7j66H_4M
+<https://www.youtube.com/watch?v=dNxaP_BTtwQ&list=PLCKuOXG0bPi26-eawizqyLOgM7j66H_4M>
 
-https://developers.google.com/search/docs/crawling-indexing/special-tags?hl=es
+<https://developers.google.com/search/docs/crawling-indexing/special-tags?hl=es>
 
 ### Primer proyecto de NextJS
 
-Pueden consultar en https://nextjs.org/docs
+Pueden consultar en <https://nextjs.org/docs>
 
 ```fish
 pnpm create next-app initial-demo
@@ -216,7 +216,7 @@ yarn start
 
 **Desplegar la aplicación en Vercel.**
 
-- Crear una cuenta con GitHub en (Vercel)[https://vercel.com].
+- Crear una cuenta con GitHub en [Vercel](https://vercel.com).
 
 - Crear un repositorio en GitHub (en mi caso `next-vercel`)
 
@@ -259,6 +259,16 @@ git push -u origin main
 docker build -t nextjs-initial .
 docker run --name=next-app -p 3000:3000 nextjs-initial
 ```
+
+## Sección 2.1 Primer Proyecto (Actualizado)
+
+### Instalación
+
+```bash
+npx create-next-app first-steps
+```
+
+![Instalación Next](./img/2.1-instalacion-next.png)
 
 ## Sección 3: Static Generated App - Pokemon Static
 
