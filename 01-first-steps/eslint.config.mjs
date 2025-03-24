@@ -1,16 +1,27 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig } from 'eslint/config'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-];
-
-export default eslintConfig;
+export default defineConfig([
+  {
+    files: ['**/*.{js,mjs,cjs,ts}'],
+    languageOptions: { globals: globals.browser },
+    rules: {
+      'linebreak-style': ['error', 'unix'],
+      quotes: ['error', 'single'],
+      semi: ['error', 'never'],
+      'comma-dangle': [2, 'always-multiline'],
+      'prettier/prettier': 'error',
+    },
+  },
+  // {
+  //   files: ["**/*.{jsx,tsx}"],
+  //   languageOptions: { globals: globals.browser },
+  //   rules: {
+  //     quotes: ["error", "double", { avoidEscape: true }],
+  //     "jsx-quotes": ["error", "prefer-double"],
+  //   },
+  // },
+  tseslint.configs.recommended,
+  'plugin:prettier/recommended',
+])
