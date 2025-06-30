@@ -29,10 +29,27 @@ __password:__ 123456
 npx prisma init
 npx prisma migrate dev
 npx prisma generate
-
 ```
 
+### Generar cadena de longitud 32
 
+A partir de código `openssl rand -base64 32` o desde la página: https://generate-secret.vercel.app/32
+
+Para la variable `NEXTAUTH_SECRET`
+
+### Importante
+
+Asegúrate de que las versiones de `prisma` y `@prisma/client` coincidan exactamente. Por ejemplo: `"@prisma/client": "^6.10.1", "prisma": "^6.10.1"`.
+
+### Configuración Provider GitHub
+
+Perfil -> Settings -> Developer settings -> New OAuth App
+
+Application name -> -> Admin-Todos
+Homepage URL -> Cualquiera
+Authorization callback URL -> este es importante -> http://localhost:3000/api/auth/callback/github
+
+Copiamos nuestro `Client ID` y `Client secrets` a `.env`
 
 # Prod
 
