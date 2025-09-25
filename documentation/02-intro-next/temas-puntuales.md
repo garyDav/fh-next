@@ -17,4 +17,4 @@ Puntualmente, tendremos exposiciones sobre temas importantes, pero puntualmente 
 - usePathName Hook
 - Nuevo sistema de rutas de Next
 
-Aquí crearemos una página estática que nos ayudará a comprender las bases de Next y crearemos la aplicación inicial para publicarla en la siguiente sección
+Aquí crearemos una página estática que nos ayudará a comprender las bases de Next y crearemos la aplicación inicial para publicarla en la siguiente sección.
