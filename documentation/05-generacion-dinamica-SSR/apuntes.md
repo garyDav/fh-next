@@ -164,4 +164,101 @@ El objetivo es ir creando esta aplicación que pueda aprovechar lo generado del 
 
   - Colocamos el contenido necesario en el card.
 
-* Prioridad de carga, añadir `priority={false}` como propiedad de mi componente `Image`.
+* Prioridad de carga.
+
+  - Si lo dejamos tal y como está al recargar la página carga todos los pókemos los 151, cosa que no les gustará a los boots de google.
+
+  - En `PokemonCard` Añadir `priority={false}` como propiedad de mi componente `Image`.
+
+  - Ahora sí estas imágenes serán cargadas bajo demanda, por defecto esta propiedad está en `true`.
+
+  - Lo mismo pasa con los `Link` por defecto se realizan las peticiones de los pókemos que se ven en pantalla, eso se guarda en `cache` ya listo para usarlo, podemos probarlo con `pnpm run build` y `pnpm start`.
+
+  - [Doc. NextJS - Image -> priority](https://nextjs.org/docs/app/api-reference/components/image#priority "api-reference -> Image -> priority")
+
+* Error Page - NextJS.
+
+  - Intentemos generar un error desde `pokemons/page.tsx` dentro del método `getPokemons` añadimos un `throw new Error('Esto es un error que no debería de suceder')`
+
+  - Vemos cómo nos muestra ese error Next.
+
+  - Creamos un archivo llamado `app/dashboard/pokemons/error.tsx` y mostramos `error.message`.
+
+  - Para ver como utilizar este archivo [Doc. NextJS - Error Handling](https://nextjs.org/docs/app/getting-started/error-handling "NextJS -> Error Handling").
+
+  - podemos utilizar la [Plantilla Error 500](https://www.creative-tim.com/twcomponents/component/tailwind-css-500-server-error-illustration "TWComponents -> ServerError")
+
+* Rutas dinámicas - Argumentos por URL.
+
+  - Intentaremos generar un error 404.
+
+  - Para esto primero crearemos una ruta dinámica en `app/dashboard/pokemon/[id]/page.tsx` creamos nuestro `functional component`.
+
+  - Ahora si intenamos acceder a cualquier pokemon veremos que la página existe.
+
+    ```tsx
+    // [id]/page.tsx
+    export default PokemonPage(props: any) {
+      console.log({ props })
+
+      return (
+        <div>
+          <h1>Hello Pokemon Page</h1>
+        </div>
+      )
+    }
+
+    // Accedemos a http://.../pokemon/4?q=char&age=30&gender=female
+    ```
+
+    ```fish
+    {
+      props: { id: '4' },
+      searchParams: { q: 'char', age: '30', gender: 'female'}
+    }
+    ```
+
+  - Añadimos los `Props`.
+
+    ```tsx
+    interface Props {
+      params: { id: string }
+    }
+
+    export default function PokemonPage({ params }: Props) {
+      return (
+        <div>
+          <h1>Pokémon { params.id }</h1>
+        </div>
+      )
+    }
+    ```
+
+  - Realizamos la petición por pokémon en `postman` copiamos la respuesta, obtenemos los tipos por `quicktype.io` pegamos y exportamos en `@/pokemons/interfaces/pokemon.ts`, añadimos a nuestro archivo barril `index.ts`.
+
+    ```tsx
+    import { Pokemon } from '@/pokemons'
+
+    interface ...
+
+    const getPokemon = async (id: string): Promise<Pokemon> => {
+      const pokemon = fetch(`http://.../${id}`, { cache: 'force-cache' }).then( resp => resp.json() )
+
+      console.log('Se cargó: ', pokemon.name)
+
+      return pokemon
+    }
+
+    export default async function PokemonPage... {
+      const pokemon = await getPokemon(params.id)
+
+      return (
+        <div>
+          { JSON.stringify(pokemon) }
+        </div>
+      )
+    }
+    ```
+
+
+
