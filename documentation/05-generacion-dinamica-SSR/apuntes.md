@@ -234,6 +234,8 @@ El objetivo es ir creando esta aplicación que pueda aprovechar lo generado del 
     }
     ```
 
+* Cargar Información del Pokémon por ID.
+
   - Realizamos la petición por pokémon en `postman` copiamos la respuesta, obtenemos los tipos por `quicktype.io` pegamos y exportamos en `@/pokemons/interfaces/pokemon.ts`, añadimos a nuestro archivo barril `index.ts`.
 
     ```tsx
@@ -242,7 +244,7 @@ El objetivo es ir creando esta aplicación que pueda aprovechar lo generado del 
     interface ...
 
     const getPokemon = async (id: string): Promise<Pokemon> => {
-      const pokemon = fetch(`http://.../${id}`, { cache: 'force-cache' }).then( resp => resp.json() )
+      const pokemon = fetch(`http://.../${id}`, { cache: 'force-cache' }).then( resp => resp.json() ) // force-cache es el valor por defecto
 
       console.log('Se cargó: ', pokemon.name)
 
@@ -259,6 +261,177 @@ El objetivo es ir creando esta aplicación que pueda aprovechar lo generado del 
       )
     }
     ```
+
+* Metadata dinámica.
+
+  - Antes lo hacíamos con `export const metadata = {...}`.
+
+  - Como queremos que la metadata cambie conforme estamos en la página de un pókemon en particular, necesitamos generar un metadata dinámico.
+
+  - Para que esto funcione debemos exportar una función asíncrona en: `app/dashboard/pokemon/[id]/page.tsx`
+
+    ```tsx
+    ...
+    // Importamos Metadata
+    export async function generateMetadata({ params }: Props): Promise<Metadata> {
+      const { id, name } = await getPokemon(params.id)
+
+      return {
+        title: `#${ id } - ${ name }`,
+        description: `Página del pokémon: ${name}`
+      }
+    }
+    ```
+
+  - En vez de `{ JSON.stringify(pokemon) }` retornamos: `{ pokemon.name }`
+
+  - también podemos revalidar para que nuestra petición se cargue en un tiempo que podríamos determinar con algún calculo:
+
+    ```tsx
+    const getPokemon = async (id: string): Promise<Pokemon> => {
+      const pokemon = fetch(`http://.../${id}`, {
+        cache: 'force-cache'
+        // next: {
+        //   revalidate: 60 * 60 * 30 * 6
+        // }
+      }).then( resp => resp.json() )
+      console.log('Se cargó: ', pokemon.name)
+
+      return pokemon
+    }
+    ```
+
+* Pantalla del Pokemon.
+
+  - Añadir los siguientes estilos del card de `https://www.creative-tim.com/twcomponents/component/profile-information-card-horizon-ui-tailwind` para un pokemon en particular, no olviden importar `next/image`:
+
+    ```tsx
+    export default async function PokemonPage({ params }: Props) {
+
+      const pokemon = await getPokemon(params.id);
+
+      return (
+        <div className="flex mt-5 flex-col items-center text-slate-800">
+          <div className="relative flex flex-col items-center rounded-[20px] w-[700px] mx-auto bg-white bg-clip-border  shadow-lg  p-3">
+            <div className="mt-2 mb-8 w-full">
+              <h1 className="px-2 text-xl font-bold text-slate-700 capitalize">
+                #{pokemon.id} {pokemon.name}
+              </h1>
+              <div className="flex flex-col justify-center items-center">
+                <Image
+                  src={pokemon.sprites.other?.dream_world.front_default ?? ''}
+                  width={150}
+                  height={150}
+                  alt={`Imagen del pokemon ${pokemon.name}`}
+                  className="mb-5"
+                />
+
+
+                <div className="flex flex-wrap">
+                  {
+                    pokemon.moves.map(move => (
+                      <p key={move.move.name} className="mr-2 capitalize">{move.move.name}</p>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 px-2 w-full">
+
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg ">
+                <p className="text-sm text-gray-600">Types</p>
+                <div className="text-base font-medium text-navy-700 flex">
+                  {
+                    pokemon.types.map(type => (
+                      <p key={type.slot} className="mr-2 capitalize">{type.type.name}</p>
+                    ))
+                  }
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg ">
+                <p className="text-sm text-gray-600">Peso</p>
+                <span className="text-base font-medium text-navy-700 flex">
+                  {
+                    pokemon.weight
+                  }
+                </span>
+              </div>
+
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg">
+                <p className="text-sm text-gray-600">Regular Sprites</p>
+                <div className="flex justify-center">
+
+                  <Image
+                    src={pokemon.sprites.front_default}
+                    width={100}
+                    height={100}
+                    alt={`sprite ${pokemon.name}`}
+                  />
+
+                  <Image
+                    src={pokemon.sprites.back_default}
+                    width={100}
+                    height={100}
+                    alt={`sprite ${pokemon.name}`}
+                  />
+
+                </div>
+              </div>
+
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg">
+                <p className="text-sm text-gray-600">Shiny Sprites</p>
+                <div className="flex justify-center">
+
+                  <Image
+                    src={pokemon.sprites.front_shiny}
+                    width={100}
+                    height={100}
+                    alt={`sprite ${pokemon.name}`}
+                  />
+
+                  <Image
+                    src={pokemon.sprites.back_shiny}
+                    width={100}
+                    height={100}
+                    alt={`sprite ${pokemon.name}`}
+                  />
+
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+
+  - Hay un pequeño error con el dominio de `raw.githubusercontent.com` en `Image`, lo resuelven.
+
+  - Para esto vamos a `next.config.js`, añadimos otra entrada de HTTP.
+
+  - Si intentamos ingresar a una ruta como `localhost:3000/dashboard/pokemon/abc`, obtendremos un error.
+
+* Not found Page - 404.
+
+  - Quiero mostrar un error en caso de quere obtener un pokemon que no existe, oh tratar de ingresar a una dirección que no existe.
+
+  - Creamos un nuevo archivo `@/app/not-found.tsx` a partir del siguiente template: `https://www.creative-tim.com/twcomponents/component/404-page-not-found`, podemos revisar su documetación en: [Doc. Next Not-Found](https://nextjs.org/docs/app/api-reference/file-conventions/not-found "Next Not-Found").
+
+  - Exportamos el componente de not-found como `export default function NotFound() {...}`, importamos el `Sidebar`.
+
+  - Cambiamos las clases por `className`, y las anclas por `Link`.
+
+  - Añadimos un `try catch` a `generateMetadata` en `catch` añadimos cualquier contenido por defecto.
+
+  - Lo que haremos es, si nó se encontró el poquemon que se solicitó, entonces que responda con un `404`, para esto creamos otro archivo similar en `@/app/dashboard/pokemon/[id]/not-found.tsx`.
+
+  - Modificamos el contenido del mensaje que tendría que hacer `Pókemon no encontrado`.
+
+  - Una vez compilado `pnpm build` y `pnpm start`, cuando realizemos una solicitún a una URL en particular, NextJS de antemano generará por ejemplo los 151 pókemons, ésto es ser generado por el servidor.
 
 
 
