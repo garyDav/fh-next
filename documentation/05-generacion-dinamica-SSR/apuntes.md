@@ -425,13 +425,19 @@ El objetivo es ir creando esta aplicación que pueda aprovechar lo generado del 
 
   - Cambiamos las clases por `className`, y las anclas por `Link`.
 
-  - Añadimos un `try catch` a `generateMetadata` en `catch` añadimos cualquier contenido por defecto.
+  - El `Link` lo apuntamos a `/dashboard` en Go Home.
 
-  - Lo que haremos es, si nó se encontró el poquemon que se solicitó, entonces que responda con un `404`, para esto creamos otro archivo similar en `@/app/dashboard/pokemon/[id]/not-found.tsx`.
+  - Hacemos la prueba añadiendo cualquier ruta `/loquesea`
+
+  - Para buscar un pokémon que no existe por ejemplo: `/dashboard/pokemon/4000`, podemos solucionar el error de la siguiente manera.
+
+  - En `/app/dashboard/pokemon/[id]/page.tsx`. Añadimos un `try catch` a `generateMetadata` en `catch` añadimos cualquier contenido por defecto con un titulo y una descripción.
+
+  - Si la petición falla `getPokemon`, una forma de solucionar es, añadir el `try catch` y en la parte de error llamar a una función `{ notFound }` de `next/navigation`, si recargan y lo vemos nos lanza al NotFound global.
+
+  - Pero si quiero un 404 de pókemon no encontrado, lo que haremos es, si nó se encontró el poquemon que se solicitó, entonces que responda con un `404`, para esto creamos otro archivo similar en `@/app/dashboard/pokemon/[id]/not-found.tsx`.
 
   - Modificamos el contenido del mensaje que tendría que hacer `Pókemon no encontrado`.
 
   - Una vez compilado `pnpm build` y `pnpm start`, cuando realizemos una solicitún a una URL en particular, NextJS de antemano generará por ejemplo los 151 pókemons, ésto es ser generado por el servidor.
-
-
 
