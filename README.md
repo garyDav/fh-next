@@ -54,7 +54,7 @@ En esta sección, se revisan distintos puntos de como utilizar la plataforma del
 
 - [Git](https://git-scm.com/)
 
-```
+```fish
 git config --global user.name "Tu nombre"
 git config --global user.email "Tu correo"
 ```

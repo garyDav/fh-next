@@ -1,4 +1,4 @@
-## Temas puntuales de la sección
+# Temas puntuales de la sección
 
 En esta sección empezaremos a trabajar en la maquetación de nuestra aplicación de e-commerce "TesloShop"
 
@@ -287,19 +287,175 @@ return (
 
 - Crearemos un componente con un nombre particular que es: `(shop)/category/not-found.tsx`.
 
-```tsx
-import Link from 'next/link'
+  ```tsx
+  import Link from 'next/link'
 
-export default function() {
+  export default function() {
+    return (
+      <div>
+        <h1> 404 Not Found</h1>
+        <Link href="/">Regresar</Link>
+      </div>
+    )
+  }
+  ```
+
+- Ahora como hacemos para lanzar la excepción, solo permitiendo que algunas categorías se permita como `localhost:3000/category/men` y `localhost:3000/category/women`.
+
+- Para esto necesitamos recibir nuestras `Props` desde `(shop)/category/[id]/page.tsx`.
+
+```tsx
+import { notFound } from 'next/navigation'
+
+interface Props {
+  params: {
+    id: string
+  }
+}
+
+export default function({params}: Props) {
+  const { id } = params;
+
+  if ( id === 'kids' ) {
+    notFound()
+  }
+
   return (
     <div>
-      <h1> 404 Not Found</h1>
-      <Link href="/">Regresar</Link>
+      <h1>Category Page {id}</h1>
     </div>
   )
 }
 ```
 
+#### Página 404 - Personalizada
 
+- Para esto creamos `src/components/ui/not-found/PageNotFound.tsx`:
+
+```tsx
+export const PageNotFound = () => {
+  return (
+    <div>PageNotFound</div>
+  )
+}
+```
+
+- Éste PageNotFound lo exportamos en nuestro archivo barril `ui/index.ts`.
+
+```ts
+export * from './ui/not-found/PageNotFound'
+...
+```
+
+- Ahora en la pantalla de `(shop)/category/not-found.tsx`, regresamos:
+
+```tsx
+// No se olviden importar, y borrar el Link
+
+return (
+  <PageNotFound />
+)
+```
+
+- Ahora podemos personalizar nuestro nor-found `ui/not-found/PageNotFound.tsx`:
+
+```tsx
+export const PageNotFound = () => {
+  return (
+    <div className="flex flex-col-reverse md:flex-row h-[800px] w-full justify-center items-center align-middle">
+      <div className="text-center px-5 mx-5">
+        <h2 className={ `${titleFont.className} antialiased text-9xl` }>404</h2>
+        <p className="font-semibold text-xl">Whoops! Lo sentimos mucho.</p>
+        <p className="font-light">
+          <span>Puedes regresar al&nbsp;</span>
+          <Link
+            href="/"
+            className="font-normal hover:underline transition-all"
+          >
+            inicio
+          </Link>
+        </p>
+      </div>
+
+      <div className="px-5 mx-5">
+        <Image
+          src="/imgs/starman_750x750.png"
+          alt="Starman"
+          className="p-5 sm:p-0"
+          width={ 550 }
+          height={ 550 }
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+#### Componente - Title
+
+- Para nuestras páginas reutilizaremos la parte del título `src/components/ui/title/Title.tsx`.
+
+```tsx
+export const Title = () => {
+  return (
+    <div>Title</div>
+  )
+}
+```
+
+- No olvidemos incluirlo a nuestro archivo vaul.
+
+- Nos dirigimos a nuestro `(shop)/page.tsx` y modificamos nuestro HomePage.
+
+```tsx
+export default function Home() {
+  return (
+    <Title />
+  )
+}
+```
+
+- Volvemos a nuestro componente Title y empezamos a personalizar.
+
+```tsx
+interface Props {
+  title: string
+  subtitle?: string
+  className?: string
+}
+
+export const Title = ({ title, subtitle, className }:Props) => {
+  return (
+    <div className={`mt-3 ${ className }`}>
+      <h1 className={ `${titleFont.className} antialiased text-4xl font-semibold my-7` }>
+        { title }
+      </h1>
+      {
+        subtitle && (
+          <h3 className="text-xl mb-5">{ subtitle }</h3>
+        )
+      }
+    </div>
+  )
+}
+```
+
+- Este componente desde el archivo que lo llama se estará quejando `(shop)/page.tsx`.
+
+```tsx
+export default function Home() {
+  return (
+    <>
+      <Title
+        title="Tienda"
+        subtitle="Todos los productos"
+        className="mb-2"
+      />
+    </>
+  )
+}
+```
+
+- También (opcional) en `(shop)/layout.tsx` podemos envolver el `children` con un `<div className="px-0 md:px-10">`
 
 
