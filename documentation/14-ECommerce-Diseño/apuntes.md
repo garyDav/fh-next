@@ -456,6 +456,58 @@ export default function Home() {
 }
 ```
 
-- También (opcional) en `(shop)/layout.tsx` podemos envolver el `children` con un `<div className="px-0 md:px-10">`
+- También (opcional) en `(shop)/layout.tsx` podemos envolver el `children` con un `<div className="px-0 sm:px-10">`
+
+#### Grid de Productos
+
+- Para todas las categorías será el mismo diseño para mostrar los productos.
+
+- Aún no tenemos ninguna base de datos, pero tenemos nuestro `seed data`.
+
+- Vamos a `(shop)/app/page.tsx`:
+
+```tsx
+...
+import { initialData } from '@/seed/seed'
+
+const products = initialData.products
+...
+```
+
+- Vamos a `src/seed/seed.ts` copiamos: `interface` y los dos `type` lo pegamos a `src/interfaces/product.interface.ts`, renombramos la interface a solo `Product` añadimos una propiedad más, el `id: string` comentado y con un `todo:` para cambiarlo después, no nos olvidemos exportar.
+
+- Adicionalmente crearemos nuestro archivo barril `index.ts` y realizamos el `export * from './product.interface`.
+
+- Creamos nuestro componente `src/components/products/product-grid/ProductGrid.tsx`:
+
+```tsx
+interface Props {
+  products: Product[]
+}
+
+export const ProductGrid = ({ products }:Props) => {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mb-10">
+      {
+        products.map(product => (
+          <span key={product.slug}>{product.title}</span>
+        ))
+      }
+    </div>
+  )
+}
+```
+
+- Utilizaremos este Grid, pero antes añadimos a nuestro archivo barril `src/components/index.ts`, `export * from './products/product-grid/ProductGrid'`
+
+- Utilizamos en `(shop)/app/page.tsx`:
+
+```tsx
+// Debajo del componente `Title`
+
+<ProductGrid products={products}/>
+```
+
+- 
 
 
