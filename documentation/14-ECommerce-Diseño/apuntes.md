@@ -508,6 +508,20 @@ export const ProductGrid = ({ products }:Props) => {
 <ProductGrid products={products}/>
 ```
 
-- 
+#### Tarjeta de producto
+
+- Creamos `components/products/product-grid/ProductGridItem.jsx`:
+
+```tsx
+interface Props {
+  product: Product
+}
+
+export const ProductGridItem = () => {
+  return (
+    <div>ProductGridItem</div>
+  )
+}
+```
 
 
